@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/sandronister/kubsecret_generate/internal/dto"
 	"github.com/sandronister/kubsecret_generate/internal/infra/ports"
 )
@@ -39,6 +41,14 @@ func (k *KubSecretUsecase) generateFiles(path string) error {
 }
 
 func (k *KubSecretUsecase) Generate() error {
+	if !k.output.IsFolder() {
+		err := k.output.CreateFolder()
+		if err != nil {
+			return err
+		}
+		fmt.Println("Folder created")
+	}
+
 	path, err := k.input.GetPath()
 
 	if err != nil {
@@ -72,6 +82,12 @@ func (k *KubSecretUsecase) Generate() error {
 	}
 
 	result, err := k.template.GetTemplate(mapKub)
+
+	if err != nil {
+		return err
+	}
+
+	err = k.output.DeleteFolder()
 
 	if err != nil {
 		return err

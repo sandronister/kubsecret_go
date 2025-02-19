@@ -2,12 +2,38 @@ package output
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"os/exec"
 )
 
+func (m *model) IsFolder() bool {
+	stat, err := os.Stat(m.folderOutput)
+	if err != nil {
+		return false
+	}
+
+	return stat.IsDir()
+}
+
+func (m *model) CreateFolder() error {
+	err := os.MkdirAll(m.folderOutput, 0755)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *model) DeleteFolder() error {
+	err := os.RemoveAll(m.folderOutput)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *model) GenerateCert(path string) error {
-	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-clcerts", "-nokeys", "-out", "cert_gen.crt")
+	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-clcerts", "-nokeys", "-out", fmt.Sprintf("%s/cert_gen.crt", m.folderOutput))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -20,7 +46,7 @@ func (m *model) GenerateCert(path string) error {
 }
 
 func (m *model) GenerateKey(path string) error {
-	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-nocerts", "-out", "cert_gen.key")
+	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-nocerts", "-out", fmt.Sprintf("%s/cert_gen.key", m.folderOutput))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -33,7 +59,7 @@ func (m *model) GenerateKey(path string) error {
 }
 
 func (m *model) GenerateRSAKey() error {
-	cmd := exec.Command("openssl", "rsa", "-in", "cert_gen.key", "-out", "cert_gen_rsa.key")
+	cmd := exec.Command("openssl", "rsa", "-in", fmt.Sprintf("%s/cert_gen.key", m.folderOutput), "-out", fmt.Sprintf("%s/cert_gen_rsa.key", m.folderOutput))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -61,11 +87,11 @@ func (m *model) generateBase64(file string) (string, error) {
 }
 
 func (m *model) GenerateTLsCert() (string, error) {
-	return m.generateBase64("cert_gen.crt")
+	return m.generateBase64(fmt.Sprintf("%s/cert_gen.key", m.folderOutput))
 }
 
 func (m *model) GenerateTLsKey() (string, error) {
-	return m.generateBase64("cert_gen_rsa.key")
+	return m.generateBase64(fmt.Sprintf("%s/cert_gen_rsa.key", m.folderOutput))
 }
 
 func (m *model) SaveFile(content []byte) error {

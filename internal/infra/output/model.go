@@ -6,11 +6,13 @@ import (
 )
 
 type model struct {
-	fileOutput string
+	fileOutput   string
+	folderOutput string
 }
 
 func New(env *configs.Enviroment) ports.IOutput {
 	return &model{
-		fileOutput: env.FileOutput,
+		fileOutput:   env.FileOutput,
+		folderOutput: env.FolderOutPut,
 	}
 }

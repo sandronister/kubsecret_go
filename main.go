@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/sandronister/kubsecret_generate/configs"
 	"github.com/sandronister/kubsecret_generate/internal/di"
 )
@@ -14,7 +16,8 @@ func main() {
 	err := usecase.Generate()
 
 	if err != nil {
-		panic(err)
+		fmt.Print(err)
+		return
 	}
 
 }
