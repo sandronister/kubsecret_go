@@ -6,11 +6,11 @@ import (
 )
 
 type model struct {
-	templateName string
+	template string
 }
 
 func New(conf *configs.Enviroment) ports.ITemplate {
 	return &model{
-		templateName: conf.TemplateName,
+		template: conf.Template,
 	}
 }

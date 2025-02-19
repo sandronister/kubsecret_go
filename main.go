@@ -7,15 +7,11 @@ import (
 
 func main() {
 
-	env, err := configs.LoadEnviroment(".")
-
-	if err != nil {
-		panic(err)
-	}
+	env := configs.LoadEnviroment()
 
 	usecase := di.NewKubUsecase(env)
 
-	err = usecase.Generate()
+	err := usecase.Generate()
 
 	if err != nil {
 		panic(err)

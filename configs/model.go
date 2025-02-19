@@ -1,31 +1,21 @@
 package configs
 
-import "github.com/spf13/viper"
-
 type Enviroment struct {
-	TemplateName string `mapstructure:"TEMPLATE_NAME"`
-	FileOutput   string `mapstructure:"FILE_OUTPUT"`
+	Template   string
+	FileOutput string
 }
 
-func LoadEnviroment(path string) (*Enviroment, error) {
-	var cfg *Enviroment
-	viper.SetConfigName("certificated")
-	viper.SetConfigType("env")
-	viper.AddConfigPath(path)
-	viper.SetConfigFile(".env")
-	viper.AutomaticEnv()
-
-	err := viper.ReadInConfig()
-	if err != nil {
-		return nil, err
+func LoadEnviroment() *Enviroment {
+	return &Enviroment{
+		Template: `kind: Secret
+				   apiVersion: v1
+				   metadata:
+  					name: {{.Name}}
+  					namespace: {{.Namespace}}
+					tls.crt: >-
+						{{.Cert}}
+					tls.key: >-
+						{{.Key}}`,
+		FileOutput: "kubsecret.yaml",
 	}
-
-	err = viper.Unmarshal(&cfg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return cfg, nil
-
 }

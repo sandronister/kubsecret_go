@@ -1,9 +1,0 @@
-kind: Secret
-apiVersion: v1
-metadata:
-  name: {{.Name}}
-  namespace: {{.NameSpace}}
-  tls.crt: >-
-    {{.Cert}}
-  tls.key: >-
-    {{.Key}}

@@ -2,28 +2,14 @@ package templates
 
 import (
 	"bytes"
-	"os"
 	"text/template"
 
 	"github.com/sandronister/kubsecret_generate/internal/dto"
 )
 
-func (m *model) getContent() ([]byte, error) {
-	content, err := os.ReadFile(m.templateName)
-	if err != nil {
-		return nil, err
-	}
-	return content, nil
-
-}
-
 func (m *model) templateParse(name string) (*template.Template, error) {
-	content, err := m.getContent()
-	if err != nil {
-		return nil, err
-	}
 
-	tmpl, err := template.New(name).Parse(string(content))
+	tmpl, err := template.New(name).Parse(m.template)
 	if err != nil {
 		return nil, err
 	}
