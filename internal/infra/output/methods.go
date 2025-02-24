@@ -86,11 +86,11 @@ func (m *model) generateBase64(file string) (string, error) {
 	return hash.String(), nil
 }
 
-func (m *model) GenerateTLsCert() (string, error) {
+func (m *model) GetTLsCert() (string, error) {
 	return m.generateBase64(fmt.Sprintf("%s/cert_gen.key", m.folderOutput))
 }
 
-func (m *model) GenerateTLsKey() (string, error) {
+func (m *model) GetTLsKey() (string, error) {
 	return m.generateBase64(fmt.Sprintf("%s/cert_gen_rsa.key", m.folderOutput))
 }
 

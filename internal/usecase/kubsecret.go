@@ -62,12 +62,12 @@ func (k *KubSecretUsecase) Generate() error {
 		return err
 	}
 
-	tlsCert, err := k.output.GenerateTLsCert()
+	tlsCert, err := k.output.GetTLsCert()
 	if err != nil {
 		return err
 	}
 
-	tlsKey, err := k.output.GenerateTLsKey()
+	tlsKey, err := k.output.GetTLsKey()
 	if err != nil {
 		return err
 	}
