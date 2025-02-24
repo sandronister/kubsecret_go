@@ -33,7 +33,7 @@ func (m *model) DeleteFolder() error {
 }
 
 func (m *model) GenerateCert(path, password string) error {
-	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-clcerts", "-nokeys", "-out", fmt.Sprintf("%s/cert_gen.crt", m.folderOutput), "-passin", fmt.Sprintf("pass:%s", password))
+	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-clcerts", "-nokeys", "-out", fmt.Sprintf("%s/cert_gen.crt", m.folderOutput), "-passin", fmt.Sprintf("pass:%s", password), "-passout", fmt.Sprintf("pass:%s", password))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -46,7 +46,7 @@ func (m *model) GenerateCert(path, password string) error {
 }
 
 func (m *model) GenerateKey(path, password string) error {
-	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-nocerts", "-out", fmt.Sprintf("%s/cert_gen.key", m.folderOutput), "-passin", fmt.Sprintf("pass:%s", password))
+	cmd := exec.Command("openssl", "pkcs12", "-in", path, "-nocerts", "-out", fmt.Sprintf("%s/cert_gen.key", m.folderOutput), "-passin", fmt.Sprintf("pass:%s", password), "-passout", fmt.Sprintf("pass:%s", password))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
