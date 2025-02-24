@@ -11,13 +11,13 @@ func LoadEnviroment() *Enviroment {
 		Template: `kind: Secret
 apiVersion: v1
 metadata:
-  	name: {{.Name}}
-  	namespace: {{.Namespace}}
+  name: {{.Name}}
+  namespace: {{.Namespace}}
 data:
-	tls.crt: >-
-		{{.Cert}}
-	tls.key: >-
-		{{.Key}}`,
+  tls.crt: >-
+    {{.Cert}}
+  tls.key: >-
+    {{.Key}}`,
 		FileOutput:   "kubsecret.yaml",
 		FolderOutPut: "certs",
 	}

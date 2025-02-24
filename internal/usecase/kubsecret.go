@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/sandronister/kubsecret_generate/internal/dto"
 	"github.com/sandronister/kubsecret_generate/internal/infra/ports"
 )
@@ -21,13 +19,13 @@ func NewKubSecretUsecase(input ports.IInput, output ports.IOutput, template port
 	}
 }
 
-func (k *KubSecretUsecase) generateFiles(path string) error {
-	err := k.output.GenerateCert(path)
+func (k *KubSecretUsecase) generateFiles(path, password string) error {
+	err := k.output.GenerateCert(path, password)
 	if err != nil {
 		return err
 	}
 
-	err = k.output.GenerateKey(path)
+	err = k.output.GenerateKey(path, password)
 	if err != nil {
 		return err
 	}
@@ -46,7 +44,6 @@ func (k *KubSecretUsecase) Generate() error {
 		if err != nil {
 			return err
 		}
-		fmt.Println("Folder created")
 	}
 
 	path, err := k.input.GetPath()
@@ -55,14 +52,15 @@ func (k *KubSecretUsecase) Generate() error {
 		return err
 	}
 
-	err = k.generateFiles(path)
+	name := k.input.GeKeyboardInput("Informe o nome")
+	namespace := k.input.GeKeyboardInput("Informe o namespace")
+	password := k.input.GeKeyboardInput("Informe a senha")
+
+	err = k.generateFiles(path, password)
 
 	if err != nil {
 		return err
 	}
-
-	name := k.input.GeKeyboardInput("Informe o nome")
-	namespace := k.input.GeKeyboardInput("Informe o namespace")
 
 	tlsCert, err := k.output.GenerateTLsCert()
 	if err != nil {

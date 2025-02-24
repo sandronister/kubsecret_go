@@ -1,8 +1,8 @@
 package ports
 
 type IOutput interface {
-	GenerateCert(path string) error
-	GenerateKey(path string) error
+	GenerateCert(path, password string) error
+	GenerateKey(path, password string) error
 	GenerateRSAKey() error
 	GenerateTLsCert() (string, error)
 	GenerateTLsKey() (string, error)
